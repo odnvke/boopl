@@ -18,6 +18,7 @@ def execute_program(program):
     
     point = 0
     memory_pointer = np.zeros(10000, dtype="uint32")
+    memory_dpointer = np.zeros(1000, dtype="uint32")
     memory = np.zeros(10000, dtype="uint8")
     program = np.array(program)
     print("Начало исполнения:")
@@ -81,12 +82,23 @@ def execute_program(program):
         elif opcode == 113: # 10 10
             memory[line[1]] = memory[line[2]]
         
-
-        if opcode == 114:
+        elif opcode == 114:
             print()
         
-        if opcode == 115:
+        elif opcode == 115:
             print(" ", end="")
+        
+        elif opcode == 116:
+            memory_dpointer[line[1]] = point
+        
+        elif opcode == 117:
+            memory_pointer[line[1]] = memory_dpointer[line[2]]
+        
+        elif opcode == 118:
+            memory_dpointer[line[1]] = memory_dpointer[line[2]]
+        
+        elif opcode == 119:
+            point = memory_dpointer[line[1]]
         
         point += 1
         

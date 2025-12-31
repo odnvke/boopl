@@ -1,4 +1,4 @@
-from util import is_pointer, get_number
+from util import is_pointer, get_number, is_dpointer
 from tokens import _and, _end, _false, _goto, _if, _not, _or, _print, _true, _xor, _next_str, _space
 
 def is_expression_complite(tokens: list) -> (bool, int):
@@ -12,6 +12,10 @@ def is_expression_complite(tokens: list) -> (bool, int):
             #   P10
             if is_pointer(string=tokens[0]):
                 return [111, get_number(tokens[0])]
+            
+            #   PD10
+            if is_dpointer(string=tokens[0]):
+                return [116, get_number(tokens[0])]
 
             #   E
             if tokens[0] == _end:
@@ -35,10 +39,23 @@ def is_expression_complite(tokens: list) -> (bool, int):
                     return[113, int(_0), int(_1)]
                 return False
             
-            #   G P10
-            if _0 == _goto and is_pointer(_1):
-                return [102, int(get_number(_1))]
+            if _0 == _goto:
+                #   G P10
+                if is_pointer(_1):
+                    return [102, int(get_number(_1))]
+                #   G PD10
+                if is_dpointer(_1):
+                    return [119, int(get_number(_1))]
             
+            
+            if is_dpointer(_0):
+                #   PD10 P10
+                if is_pointer(_1):
+                    return [117, _0, _1]
+                #   PD10 PD10
+                if is_dpointer(_1):
+                    return [118, _0, _1]
+
             #   I 10
             if _0 == _if and _1.isdigit():
                 return [103, int(_1)]
@@ -56,7 +73,6 @@ def is_expression_complite(tokens: list) -> (bool, int):
                 if _1 == _space:
                     return [115]
                 
-            
             return False
         
         if len_tokens == 3:
