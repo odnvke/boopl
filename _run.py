@@ -74,10 +74,6 @@ def execute_program(program):
             memory[line[1]] = 1 if (memory[line[2]] == 1) != (memory[line[3]] == 1) else 0
             #print(f"M[{line[1]}] = M[{line[2]}] XOR M[{line[3]}]")
                 
-        elif opcode == 111:  # P10
-            #print("2",end="")
-            pass
-                
         elif opcode == 112:  # E
             print(f"конец программы через E")
             break
